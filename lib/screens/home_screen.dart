@@ -4,10 +4,13 @@ import 'dart:math';
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:yourtaste/components/dimensions.dart';
 import 'package:yourtaste/data/soup.dart';
 import '../components/btext.dart';
 import '../components/colors.dart';
 import '../components/stext.dart';
+import '../data/soup_data.dart';
+import 'details_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -81,12 +84,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
             ),
           ),
-          HomeBody(items),
+          Expanded(child: SingleChildScrollView(
+            child: HomeBody(items),
+          )),
         ],
       ),
     );
   }
 }
+
+
+
 class HomeBody extends StatefulWidget {
   List<SoupDart> items = [];
   HomeBody(List<SoupDart> items){
@@ -101,6 +109,7 @@ class _HomeBodyState extends State<HomeBody> {
   PageController pageController = PageController(viewportFraction: 0.80);
   var _currPageValue = 0.0;
   List<SoupDart> items = [];
+  //List<> items = [];
 
   _HomeBodyState(List<SoupDart> items){
     this.items = items;
@@ -144,6 +153,67 @@ class _HomeBodyState extends State<HomeBody> {
                 borderRadius: BorderRadius.circular(5.0)),
           ),
         ),
+        SizedBox(height: 10,),
+       Container(
+         height:700,
+         child:  ListView.builder(
+             physics: NeverScrollableScrollPhysics(),
+             shrinkWrap: true,
+             itemCount: SOUPDATA.length,
+             itemBuilder: (BuildContext context,int index){
+    var post=SOUPDATA.elementAt(index) ;
+    print("===>post ${post["image"]}");
+    // return GestureDetector(
+    // onTap: () {
+    // Navigator.of(context).push(MaterialPageRoute(
+    // builder: (context) => DetailScreen()));
+    return Container(
+    margin: EdgeInsets.only(left: 5,right: 5,bottom: 10),
+    child: Row(
+    children: [
+    Container(
+    width: 120,
+    height: 120,
+    decoration: BoxDecoration(
+    borderRadius: BorderRadius.circular(30),
+    color: Colors.white38,
+    image: DecorationImage(
+    image: ExactAssetImage(
+    "${post["image"]}",
+    ),
+    fit: BoxFit.fitHeight,
+    ),
+    )),
+    SizedBox(
+    width: 10,
+    ),
+    Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: <Widget>[
+    Text(
+    "${post["title"]}",
+    style: const TextStyle(
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: Colors.black),
+    ),
+    ]),
+    ]));
+    }))],
+            );
+
+    // ListTile(
+    //     leading: Icon(Icons.list),
+    //     trailing: Text("GFG",
+    //       style: TextStyle(
+    //           color: Colors.green,fontSize: 15),),
+    //     title:Text("List item $index")
+    // );
+    }
+    // );
+    // }),
+    //
+
          // Container(
         //   height: 100,
         //   child: ListView.separated(
@@ -157,16 +227,77 @@ class _HomeBodyState extends State<HomeBody> {
         //       );
         //     }, separatorBuilder: (BuildContext context, int index) { return Divider(); },),
         // )
-      ],
-
-    );
+    // Positioned(
+    // top:130 ,//size.height * 0.25 + space
+    // right: 0,
+    // left: 0,
+    // child: Container(
+    // decoration: BoxDecoration(
+    // color: Color(0xffF1F1FA),
+    // borderRadius: BorderRadius.only(
+    // topLeft: Radius.circular(40),
+    // topRight: Radius.circular(40) //Radius=40
+    // ),
+    // )
+    // )
+        // ListView.builder(
+        //     physics: BouncingScrollPhysics(
+        //         parent: AlwaysScrollableScrollPhysics()),
+        //     shrinkWrap: true,
+        //     itemCount: items.length,
+        //     itemBuilder: (context, index) {
+        //       var post = items[index];
+        //       print("===>post ${post.image}");
+        //       return GestureDetector(
+        //         onTap: () {
+        //           Navigator.of(context).push(MaterialPageRoute(
+        //               builder: (context) => DetailScreen()));
+        //           // Navigate to Certain Video of the list from DATABASE
+        //         },
+        //         child: Container(
+        //           margin: EdgeInsets.only(top: 30),//size.width * 0.031597
+        //           child: Row(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               Container(
+        //                   height: 80.0,
+        //                   width: 80.0,
+        //                   decoration: BoxDecoration(
+        //                     borderRadius: BorderRadius.all(
+        //                       Radius.circular(5),
+        //                     ),
+        //                     image: DecorationImage(
+        //                       image: ExactAssetImage(
+        //                         "${post.image}",
+        //                       ),
+        //                       fit: BoxFit.fitHeight,
+        //                     ),
+        //                   )),
+        //               SizedBox(
+        //                 width: 10,
+        //               ),
+        //               Column(
+        //                 crossAxisAlignment: CrossAxisAlignment.start,
+        //                 children: <Widget>[
+        //                   Text(
+        //                     "${post.title}",
+        //                     style: const TextStyle(
+        //                         fontSize: 14,
+        //                         fontWeight: FontWeight.bold,
+        //                         color: Colors.black),
+        //                   ),
+        //                  ],
+        //           ),
+        //         ]),
+        //       ));
+        //     })
   }
 
   Widget _buildPageItem(int index) {
     return Stack(
       children: [
         Container(
-          height: 170,
+          height: 180,
           margin: EdgeInsets.only(left: 0, right: 10),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(30),
@@ -183,4 +314,4 @@ class _HomeBodyState extends State<HomeBody> {
 
   }
 
-}
+
